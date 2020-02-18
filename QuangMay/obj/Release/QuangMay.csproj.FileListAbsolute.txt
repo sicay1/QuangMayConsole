@@ -1,0 +1,17 @@
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Data\MTM_Library.xlsx
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Data\MTM_Lib.json
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Data\MTM_MinMax.json
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\QuangMay.exe.config
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\QuangMay.exe.manifest
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\QuangMay.application
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\QuangMay.exe
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\QuangMay.pdb
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Newtonsoft.Json.dll
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Newtonsoft.Json.xml
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.csproj.CoreCompileInputs.cache
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.TrustInfo.xml
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.exe.manifest
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.application
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.csproj.CopyComplete
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.exe
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.pdb
