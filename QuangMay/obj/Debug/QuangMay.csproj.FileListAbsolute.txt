@@ -7,7 +7,6 @@ D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\QuangMay.exe.config
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\QuangMay.exe
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\QuangMay.pdb
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.csprojAssemblyReference.cache
-D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.csproj.CoreCompileInputs.cache
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.exe
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.pdb
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\Data\MTM_Library.xlsx
