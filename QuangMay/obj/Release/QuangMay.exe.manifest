@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="QuangMay.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="QuangMay.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
     <assemblyIdentity name="QuangMay" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -54,24 +54,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="QuangMay.exe" size="34272">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="QuangMay.exe" size="34784">
       <assemblyIdentity name="QuangMay" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>AFM5uDUbco4uZkpBD0O5MrUn1M7dmHY67qR8wCdMZMA=</dsig:DigestValue>
+        <dsig:DigestValue>Y2+h0R+zHCsR+3OKchjjEW8IpX1UviZJOQ4WfrFXGYM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Data\MTM_Lib.json" size="17869">
+  <file name="Data\MTM_Lib.json" size="18940">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>ZXWLAkyJ5bS4gGfS4mqTAAKAAgt4E00XCKm/m1O2iPA=</dsig:DigestValue>
+      <dsig:DigestValue>66/ffztw8wUvou1XfxSm7+V/0Z/ACEs/MGRPjmAqHM8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Data\MTM_Library.xlsx" size="23801">
@@ -83,13 +83,22 @@
       <dsig:DigestValue>siBFtXVHzSlO09o1uc/IzcYJWkG0gD7SzVdzo5p96m8=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Data\MTM_MinMax.json" size="1134">
+  <file name="Data\MTM_Library_modified.xlsx" size="28100">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>z6hllu/1o4HA4brjD6p1KnD5Cuv4PsnyJJyXH4lWF1M=</dsig:DigestValue>
+      <dsig:DigestValue>VqdYBppdrIvCE33nnqfT47/XcJLUzSFsvONyZI7pYT8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Data\MTM_MinMax.json" size="1250">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cqsH8kyfxfkGjDfV/mTBknnPk4V2J5SuBt4ZFPWi12s=</dsig:DigestValue>
     </hash>
   </file>
   <file name="QuangMay.exe.config" size="187">
