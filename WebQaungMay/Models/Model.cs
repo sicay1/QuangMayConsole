@@ -7,6 +7,7 @@ namespace WebQaungMay.Models
 {
     public class Model
     {
+        public List<K_Year> ky = new List<K_Year>();
         public class MTM
         {
             public MTM()

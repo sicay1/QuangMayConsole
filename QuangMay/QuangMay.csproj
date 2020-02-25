@@ -103,6 +103,7 @@
     <Content Include="Data\MTM_MinMax.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Data\MTM_Library_modified.xlsx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="QuangMay_TemporaryKey.pfx" />

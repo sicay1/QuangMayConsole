@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -15,7 +16,6 @@ namespace WebQaungMay.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -23,6 +23,17 @@ namespace WebQaungMay.Controllers
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase file)
         {
+            //Application xlApp = new Application();
+            //Workbook workbook = new Workbook();
+            //Workbook workbookAvgMonthOfCities = new Workbook();
+            //Sheets sheets;
+            //Worksheet sheetAvgMonthOfCities = new Worksheet();
+
+            foreach (var process in Process.GetProcessesByName("EXCEL"))
+            {
+                process.Kill();
+            }
+
             try
             {
                 string _path = "";
@@ -31,16 +42,21 @@ namespace WebQaungMay.Controllers
                     string _FileName = Path.GetFileName(file.FileName);
                     _path = Path.Combine(Server.MapPath("~/UploadData"), _FileName);
                     var ExcelFile = new FileInfo(_path);
-                    if(ExcelFile.Exists)
+                    if (ExcelFile.Exists)
                         ExcelFile.Delete();
                     file.SaveAs(_path);
+
+                    var di = new DirectoryInfo(Server.MapPath("~/Result"));
+                    foreach (FileInfo fi in di.GetFiles())
+                    {
+                        fi.Delete();
+                    }
                 }
-                //ViewBag.Message = "File Uploaded Successfully!!";
 
 
 
                 //#region init data
-                Application xlApp = new Application();
+                var xlApp = new Application();
                 //var xlsWorkbook = new Workbook();
 
                 var InputPath = "";
@@ -50,9 +66,9 @@ namespace WebQaungMay.Controllers
 
                 string path = Directory.GetCurrentDirectory();
 
-                Workbook workbook = xlApp.Workbooks.Open(Server.MapPath("~/Content/MTM_Library.xlsx"));
-
-                Workbook workbookAvgMonthOfCities = xlApp.Workbooks.Open(_path);
+                //Workbook workbook = xlApp.Workbooks.Open(Server.MapPath("~/Content/MTM_Library.xlsx"));
+                var workbook = xlApp.Workbooks.Open(Server.MapPath("~/Content/MTM_Library_modified.xlsx"));
+                var workbookAvgMonthOfCities = xlApp.Workbooks.Open(_path);
 
                 var sheetAvgMonthOfCities = (Worksheet)workbookAvgMonthOfCities.Sheets[1];
                 int CurrColumn = 0;
@@ -85,12 +101,12 @@ namespace WebQaungMay.Controllers
                     var ActiveSheet = (Worksheet)sheets[p];
                     if (ActiveSheet.Name == "Min-Max")
                     {
-                        for (int t = 1; t <= 10; t++)
+                        for (int t = 1; t <= 21; t++)
                         {
-                            for (int y = 1; y <= 11; y++)
+                            for (int y = 1; y <= 10; y++)
                             {
                                 var v = Convert.ToDouble(ActiveSheet.Cells[t, y].Value2);
-                                v = Math.Round(v, 2);
+                                v = Math.Round(v, 3);
                                 SheetMinMax.sValues.Add(v);
                             }
                         }
@@ -103,10 +119,10 @@ namespace WebQaungMay.Controllers
                         thisMTM.sName = ActiveSheet.Name;
                         for (int t = 1; t <= 10; t++)
                         {
-                            for (int y = 1; y <= 10; y++)
+                            for (int y = 1; y <= 20; y++)
                             {
                                 var v = Convert.ToDouble(ActiveSheet.Cells[t, y].Value2);
-                                v = Math.Round(v, 2);
+                                v = Math.Round(v, 4);
                                 thisMTM.sValues.Add(v);
                             }
                         }
@@ -132,41 +148,17 @@ namespace WebQaungMay.Controllers
                         listMTM.Add(thisMTM);
                     }
 
+                    Marshal.ReleaseComObject(ActiveSheet);
 
                 }
-
-
-
-
-                //FileInfo fi1 = new FileInfo(@path + @"\Data\MTM_MinMax.json");
-                //StreamReader sr = new StreamReader(File.ReadAllText(fi1.FullName));
-                //string jsonString = sr.ReadToEnd();
-                //JavaScriptSerializer ser = new JavaScriptSerializer();
-                //List<MTM> listMTM = ser.Deserialize<List<MTM>>(jsonString);
-
-                //FileInfo fi2 = new FileInfo(@path + @"\Data\MTM_MinMax.json");
-                //sr = new StreamReader(File.ReadAllText(fi2.FullName));
-                //jsonString = sr.ReadToEnd();
-                //MTM SheetMinMax = ser.Deserialize<MTM>(jsonString);
-
 
                 #endregion
 
 
-                //var aaa = JsonConvert.SerializeObject(SheetMinMax);
-
-
-
-
                 foreach (var ct in KOfYear)
                 {
-                    List<double> TrungBinhThang = new List<double> {
-                            0.435, 0.345, 0.475, 0.550, 0.510, 0.500, 0.520, 0.498, 0.485, 0.475, 0.464, 0.452,
-                            };
-
-
-
-
+                    List<double> TrungBinhThang = new List<double>();
+                    ct.KMon.ForEach(x => TrungBinhThang.Add(x.K_AvgMon));
 
 
                     #region bước 7
@@ -208,7 +200,8 @@ namespace WebQaungMay.Controllers
                         if (indexOfMonth == 0)
                             LastMonthAvg = ct.KMon.SingleOrDefault(x => x.MonName == "Dec").K_AvgMon;
                         else
-                            LastMonthAvg = ct.KMon[indexOfMonth - 1].K_AvgMon;
+                            //LastMonthAvg = ct.KMon[indexOfMonth - 1].K_AvgMon;
+                            LastMonthAvg = ct.KMon[indexOfMonth - 1].K_DaysInMon.Last();
                         #endregion
 
                         //loop for days in current month
@@ -234,15 +227,16 @@ namespace WebQaungMay.Controllers
                                 }
                             }
 
-                            var rowNo = b3RowOnMinMax * 10;
-                            var rowOfSelectedMTM = currentMTM.sValues.GetRange(rowNo, 10);
+                            double tempNo = (double)b3RowOnMinMax * 10 / 20;
+                            var rowNo = Convert.ToInt16(Math.Floor(tempNo));
+                            var rowOfSelectedMTM = currentMTM.sValues.GetRange(rowNo*20, 20);
                             #endregion
 
 
                             #region bước 4
 
                             var R = rnd.NextDouble();
-                            R = Math.Round(R, 2);
+                            R = Math.Round(R, 4);
 
 
                             #endregion
@@ -250,10 +244,10 @@ namespace WebQaungMay.Controllers
                             #region bước 5
                             double sumOfB4 = 0;
                             int indexRowOfB4 = 0;
-                            for (int i = 0; i < rowOfSelectedMTM.Count - 1; i++)
+                            for (int i = 0; i < rowOfSelectedMTM.Count; i++)
                             {
                                 sumOfB4 += rowOfSelectedMTM[i];
-                                sumOfB4 = Math.Round(sumOfB4, 3);
+                                sumOfB4 = Math.Round(sumOfB4, 4);
 
                                 if (sumOfB4 > R)
                                 {
@@ -275,7 +269,7 @@ namespace WebQaungMay.Controllers
 
                             #region bước 6
                             double KtOfCurrentDay = (currentMinMaxColumnList[indexRowOfB4] + currentMinMaxColumnList[indexRowOfB4 + 1]) / 2;
-                            KtOfCurrentDay = Math.Round(KtOfCurrentDay, 2);
+                            KtOfCurrentDay = Math.Round(KtOfCurrentDay, 4);
                             ct.KMon[j].K_DaysInMon[k] = KtOfCurrentDay;
                             ct.KMon[j].RndNo_DaysInMon[k] = R;
                             #endregion
@@ -292,6 +286,7 @@ namespace WebQaungMay.Controllers
                     //Prepare save out result xls
                     var idx = _path.LastIndexOf('\\');
                     InputPath = _path.Substring(0, idx);
+                    InputPath = InputPath.Replace("UploadData", "Result");
 
                     var xlsWorkbook = xlApp.Workbooks.Add();
                     xlsWorkbook.Author = "Tôn Trương";
@@ -300,7 +295,7 @@ namespace WebQaungMay.Controllers
                     {
                         //Add a blank WorkSheet
                         //WorkSheet xlsSheet = xlsWorkbook.CreateWorkSheet(kOfMON.Key);
-                        var xlsSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlsWorkbook.Worksheets.Add();
+                        var xlsSheet = (Worksheet)xlsWorkbook.Worksheets.Add();
                         var rang = xlsSheet.UsedRange;
                         xlsSheet.Name = kOfMON.MonName;
 
@@ -328,20 +323,14 @@ namespace WebQaungMay.Controllers
                         Marshal.ReleaseComObject(xlsSheet);
                     }
                     //Save the excel file
+
+
+
                     xlsWorkbook.SaveAs($"{InputPath}\\Result_{ct.CityName}.xlsx");
                     Console.WriteLine($"saved file to {InputPath}\\Result_{ct.CityName}.xlsx");
                     xlsWorkbook.Close(true, misValue, misValue);
 
                     Marshal.ReleaseComObject(xlsWorkbook);
-
-
-
-
-
-
-
-
-
 
                 }
                 workbook.Close();
@@ -352,20 +341,30 @@ namespace WebQaungMay.Controllers
 
                 Marshal.ReleaseComObject(sheetAvgMonthOfCities);
                 Marshal.ReleaseComObject(sheets);
-
-                Marshal.ReleaseComObject(xlApp);
                 Marshal.ReleaseComObject(workbook);
                 Marshal.ReleaseComObject(workbookAvgMonthOfCities);
+                Marshal.ReleaseComObject(xlApp);
 
                 ViewBag.Message = "okkkkkkkkk";
-                return View();
+                return RedirectToAction("Calculation", KOfYear);
+                //return View();
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
+                //workbook.Close();
+                //workbookAvgMonthOfCities.Close();
+                //xlApp.Quit();
+                //Marshal.ReleaseComObject(sheetAvgMonthOfCities);
+                
+                ////Marshal.ReleaseComObject(sheets);
+                //Marshal.ReleaseComObject(workbook);
+                //Marshal.ReleaseComObject(workbookAvgMonthOfCities);
+                //Marshal.ReleaseComObject(xlApp);
                 ViewBag.Message = "File upload failed!! " + e.Message;
                 return View();
             }
+
         }
 
         public ActionResult About()
@@ -380,6 +379,19 @@ namespace WebQaungMay.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult Calculation(List<K_Year> KYrs)
+        {
+            //var di = new DirectoryInfo(Server.MapPath("~/Result"));
+            //string path = AppDomain.CurrentDomain.BaseDirectory + "FolderName/";
+            //byte[] fileBytes = System.IO.File.ReadAllBytes(path + "filename.extension");
+            //string fileName = "filename.extension";
+            //return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+
+            //KYrs.ForEach(x => x.CityName = $"~/Result/Result_{x.CityName}.xlsx");
+            return View(KYrs);
+        
         }
     }
 }

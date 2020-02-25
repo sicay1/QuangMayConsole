@@ -1,0 +1,54 @@
+﻿@model WebQaungMay.Models.Model
+@using WebQaungMay.Models;
+@{
+
+    ViewBag.Title = "Calculation";
+    var List_K_Of_Cities = Model.ky;
+}
+
+<h1>Calculation</h1>
+
+
+
+
+<style>
+    table {
+        width: 100%
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+@for (int i = 0; i < List_K_Of_Cities.Count; i++)
+{
+    <div align="center"><h1>@List_K_Of_Cities[i].CityName</h1></div>
+    <div>
+        <a href="~/Result/Result_@(List_K_Of_Cities[i].CityName).xlsx">@List_K_Of_Cities[i].CityName</a>
+    </div>
+    for (int r = 0; r < List_K_Of_Cities[i].KMon.Count; r++)
+    {
+        <div>
+            <table>
+                @for (int j = 0; j <= 4; j++)
+                {
+                    <tr>
+                        @for (int k = j * 7; k < j * 7 + 7; k++)
+                        {
+                            if (k < List_K_Of_Cities[i].KMon[r].K_DaysInMon.Count)
+                            {
+                                <td>@List_K_Of_Cities[i].KMon[r].K_DaysInMon[k]</td>
+                            }
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+        <br />
+        <br />
+        <br />
+    }
+
+}
+
