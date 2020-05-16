@@ -61,17 +61,17 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Y2+h0R+zHCsR+3OKchjjEW8IpX1UviZJOQ4WfrFXGYM=</dsig:DigestValue>
+        <dsig:DigestValue>M//AldETIkOvAHVXo7EGtyyFqT+V17PN5TYQnUgK59U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Data\MTM_Lib.json" size="18940">
+  <file name="Data\MTM_Lib.json" size="17869">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>66/ffztw8wUvou1XfxSm7+V/0Z/ACEs/MGRPjmAqHM8=</dsig:DigestValue>
+      <dsig:DigestValue>ZXWLAkyJ5bS4gGfS4mqTAAKAAgt4E00XCKm/m1O2iPA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Data\MTM_Library.xlsx" size="23801">
@@ -92,13 +92,13 @@
       <dsig:DigestValue>VqdYBppdrIvCE33nnqfT47/XcJLUzSFsvONyZI7pYT8=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Data\MTM_MinMax.json" size="1250">
+  <file name="Data\MTM_MinMax.json" size="1134">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>cqsH8kyfxfkGjDfV/mTBknnPk4V2J5SuBt4ZFPWi12s=</dsig:DigestValue>
+      <dsig:DigestValue>z6hllu/1o4HA4brjD6p1KnD5Cuv4PsnyJJyXH4lWF1M=</dsig:DigestValue>
     </hash>
   </file>
   <file name="QuangMay.exe.config" size="187">

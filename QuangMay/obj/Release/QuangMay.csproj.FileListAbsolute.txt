@@ -8,7 +8,6 @@ D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\QuangMay.exe
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\QuangMay.pdb
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Newtonsoft.Json.dll
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Newtonsoft.Json.xml
-D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.csproj.CoreCompileInputs.cache
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.TrustInfo.xml
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.exe.manifest
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.application
@@ -33,3 +32,5 @@ D:\Code\QuangMayConsole\QuangMay\obj\Release\QuangMay.application
 D:\Code\QuangMayConsole\QuangMay\obj\Release\QuangMay.csproj.CopyComplete
 D:\Code\QuangMayConsole\QuangMay\obj\Release\QuangMay.exe
 D:\Code\QuangMayConsole\QuangMay\obj\Release\QuangMay.pdb
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Data\MTM_Library_modified.xlsx
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.csprojAssemblyReference.cache
