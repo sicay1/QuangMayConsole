@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>D:\Code\QuangMayConsole\QuangMay\bin\Debug\sgdn.xlsx</StartArguments>
+    <StartArguments>D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\sgdn.xlsx</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
     <PublishUrlHistory>D:\Code\OUTSOURCE\QuangMay\PublicCode\</PublishUrlHistory>

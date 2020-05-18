@@ -114,3 +114,4 @@ D:\Code\QuangMayConsole\WebQaungMay\obj\Debug\WebQaungMay.csprojAssemblyReferenc
 D:\Code\QuangMayConsole\WebQaungMay\obj\Debug\WebQaungMay.csproj.CopyComplete
 D:\Code\QuangMayConsole\WebQaungMay\obj\Debug\WebQaungMay.dll
 D:\Code\QuangMayConsole\WebQaungMay\obj\Debug\WebQaungMay.pdb
+D:\Code\OUTSOURCE\QuangMay\WebQaungMay\obj\Debug\WebQaungMay.csproj.CoreCompileInputs.cache

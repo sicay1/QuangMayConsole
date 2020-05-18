@@ -10,15 +10,49 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web.Script.Serialization;
 using static QuangMay.Model;
+//using MathNet.Numerics;
+//using MathNet.Numerics.Providers.LinearAlgebra;
 
 namespace QuangMay
 {
     class Program
     {
+        static double b3_Tinh_HeSo_oKt(double kt)
+        {
+            var res = 0.16 * Math.Sin(Math.PI * kt / 0.9);
+            return res;
+
+        }
+
+        static double b6_Tinh_Ktm(double Kt, double phiOfCity, double gocCuaGio, double xichDoVi)
+        {
+            double lambdaCalculus = Kt - 1.167 * Math.Pow(Kt, 3) * (1 - Kt);
+            double pico = 0.979 * (1 - Kt);
+            double k = 1.141 * (1 - Kt) / Kt;
+            double m = 1 / (Math.Cos(phiOfCity) * Math.Cos(xichDoVi) * Math.Cos(gocCuaGio) + Math.Sin(phiOfCity) * Math.Sin(xichDoVi));
+            return lambdaCalculus + pico * Math.Exp(-k * m);
+        }
+
+        static double b8_Tinh_X(int gioTruoc)
+        {
+            Random rnd = new Random();
+            var et = rnd.Next(0, 1);
+            double x = 0.54 * gioTruoc + et;
+            return x;
+        }
+
+
+        static double b10_Tinh_Kt(double b6_Ktm, double b9_Fnormal, double b3_oKt)
+        {
+            double res_kt = b6_Ktm + (b9_Fnormal / b3_oKt);
+            return res_kt;
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("init data, please wait...");
-
+            var goctheogio = new List<int> { -165, -150, -135, -120, -105, -90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180 };
+            
             foreach (var process in Process.GetProcessesByName("EXCEL"))
             {
                 process.Kill();
@@ -33,12 +67,12 @@ namespace QuangMay
                 {
                     Console.WriteLine("Need Excel file to calculate");
                     return;
-                    
+
                 }
                 else
                 {
                     var ExcelFile = new FileInfo(args[0]);
-                    
+
                     var di = new DirectoryInfo(_pathDir + @"\Result");
                     Directory.CreateDirectory(di.FullName);
 
@@ -51,9 +85,8 @@ namespace QuangMay
 
                     //#region init data
                     var xlApp = new Application();
-                    //var xlsWorkbook = new Workbook();
-
-                    //var InputPath = "";
+                    //var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(-3, true);
+                    //Fnomarl = Math.Round(Fnomarl, 5);
                     object misValue = System.Reflection.Missing.Value;
                     var KOfYear = new List<K_Year>();
 
@@ -77,6 +110,28 @@ namespace QuangMay
                         }
                         CurrColumn++;
                     }
+
+                    var workbookViXich = xlApp.Workbooks.Open(Environment.CurrentDirectory + "\\dovixich.xlsx");
+                    var Sheet_ViXich_HCM = (Worksheet)workbookViXich.Sheets[1];
+                    var Sheet_viXich_DANANG = (Worksheet)workbookViXich.Sheets[2];
+
+
+                    var phiHCM = Sheet_ViXich_HCM.Cells[1,2].Value2;
+                    var arrViXichHCM = new List<double>();
+                    for (int i=2;i<367;i++)
+                    {
+                        arrViXichHCM.Add(Sheet_ViXich_HCM.Cells[i, 5].Value2);
+                    }
+                    
+                    var phiDANANG = Sheet_viXich_DANANG.Cells[1,2].Value2;
+                    var arrViXichDANANG = new List<double>();
+                    for (int i = 2; i < 367; i++)
+                    {
+                        arrViXichDANANG.Add(Sheet_viXich_DANANG.Cells[i, 5].Value2);
+                    }
+
+
+
 
                     //init random number for bước 4
                     Random rnd = new Random();
@@ -299,8 +354,10 @@ namespace QuangMay
                             int count = 2;
                             for (int i = 1; i <= 31; i++)
                             {
-                                xlsSheet.Cells[count, 1].Value2 = i;
-                                count++;
+                                xlsSheet.Cells[count, 1].Value2 = "ngày " + i;
+                                //xlsSheet.Cells[xlsSheet.Cells[count+1, 1], xlsSheet.Cells[count+24, 1]].Merge();
+                                count += 25;
+                                
                             }
 
 
@@ -311,7 +368,22 @@ namespace QuangMay
                                 //xlsSheet.Cells[count, 4].Value2 = kOfMON.K_DaysInMon[count];
                                 xlsSheet.Cells[count, 2].Value2 = kOfMON.RndNo_DaysInMon[i];
                                 xlsSheet.Cells[count, 3].Value2 = kOfMON.K_DaysInMon[i];
-                                count++;
+
+                                var b3_oKt = b3_Tinh_HeSo_oKt(kOfMON.K_DaysInMon[i]);
+
+
+                                //var tongSoNgay = CountDays(31, 12);
+                                for (int e = 0; e < goctheogio.Count; e++)
+                                {
+                                    var b6_kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiHCM, goctheogio[e], 0.0);
+
+
+
+                                    xlsSheet.Cells[count + e + 1, 2].Value2 = "9";
+                                }
+
+
+                                count+=25;
                             }
 
                             Marshal.ReleaseComObject(xlsSheet);
@@ -342,7 +414,7 @@ namespace QuangMay
                     Console.WriteLine("Calculate finished, check output xlsx file");
 
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -350,6 +422,33 @@ namespace QuangMay
             }
             Console.WriteLine("any key to exit!");
             Console.ReadLine();
+        }
+
+        static int soNgayCuaThang(int mon)
+        {
+            switch (mon)
+            {
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    return 30;
+                case 2:
+                    return 28;
+                default:
+                    return 31;
+            }
+        }
+
+        static int CountDays(int day, int mon)
+        {
+            var count = 0;
+            for (int i= mon; i>1; i--)
+            {
+                count += soNgayCuaThang(i);
+            }
+            count += day;
+            return count;
         }
     }
 }

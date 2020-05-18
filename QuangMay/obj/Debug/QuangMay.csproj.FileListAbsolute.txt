@@ -38,3 +38,7 @@ D:\Code\QuangMayConsole\QuangMay\obj\Debug\QuangMay.csproj.CopyComplete
 D:\Code\QuangMayConsole\QuangMay\obj\Debug\QuangMay.exe
 D:\Code\QuangMayConsole\QuangMay\obj\Debug\QuangMay.pdb
 D:\Code\QuangMayConsole\QuangMay\bin\Debug\Data\MTM_Library_modified.xlsx
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.csproj.CoreCompileInputs.cache
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\Data\MTM_Library_modified.xlsx
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\MathNet.Numerics.dll
+D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\MathNet.Numerics.xml
