@@ -85,8 +85,7 @@ namespace QuangMay
 
                     //#region init data
                     var xlApp = new Application();
-                    //var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(-3, true);
-                    //Fnomarl = Math.Round(Fnomarl, 5);
+                    ;
                     object misValue = System.Reflection.Missing.Value;
                     var KOfYear = new List<K_Year>();
 
@@ -375,11 +374,16 @@ namespace QuangMay
                                 //var tongSoNgay = CountDays(31, 12);
                                 for (int e = 0; e < goctheogio.Count; e++)
                                 {
-                                    var b6_kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiHCM, goctheogio[e], 0.0);
+                                    var kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiHCM, goctheogio[e], 0.0);
 
+                                    var x = b8_Tinh_X(e);
+                                    //var b9_fnormal = b9_fnormal();
+                                    var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(x, true);
+                                    Fnomarl = Math.Round(Fnomarl, 5);
 
-
-                                    xlsSheet.Cells[count + e + 1, 2].Value2 = "9";
+                                    var b10 = b10_Tinh_Kt(kt, Fnomarl, b3_oKt);
+                                    xlsSheet.Cells[count + e + 1, 2].Value = $"Hour {e+1}";
+                                    xlsSheet.Cells[count + e + 1, 3].Value2 = b10;
                                 }
 
 
