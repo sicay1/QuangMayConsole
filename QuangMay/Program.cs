@@ -58,9 +58,25 @@ namespace QuangMay
                 process.Kill();
             }
 
+            var ExcelFile = new FileInfo(args[0]);
+            string _pathDir = Directory.GetCurrentDirectory();
+            var xlApp = new Application();
+            var workbook = xlApp.Workbooks.Open(_pathDir + @"\Data\MTM_Library_modified.xlsx");
+            var sheets = workbook.Sheets;
+
+            var workbookAvgMonthOfCities = xlApp.Workbooks.Open(ExcelFile.FullName);
+            var sheetAvgMonthOfCities = (Worksheet)workbookAvgMonthOfCities.Sheets[1];
+            
+
+
+            var workbookViXich = xlApp.Workbooks.Open(_pathDir + @"\Data\dovixich.xlsx");
+            var Sheet_ViXich_HCM = (Worksheet)workbookViXich.Sheets[1];
+            var Sheet_viXich_DANANG = (Worksheet)workbookViXich.Sheets[2];
+
+
             try
             {
-                string _pathDir = Directory.GetCurrentDirectory();
+                
                 //string _path = "";
 
                 if (args.Count() != 1)
@@ -71,7 +87,7 @@ namespace QuangMay
                 }
                 else
                 {
-                    var ExcelFile = new FileInfo(args[0]);
+                    
 
                     var di = new DirectoryInfo(_pathDir + @"\Result");
                     Directory.CreateDirectory(di.FullName);
@@ -84,7 +100,7 @@ namespace QuangMay
 
 
                     //#region init data
-                    var xlApp = new Application();
+                    
                     ;
                     object misValue = System.Reflection.Missing.Value;
                     var KOfYear = new List<K_Year>();
@@ -93,10 +109,11 @@ namespace QuangMay
                     string path = Directory.GetCurrentDirectory();
 
                     //Workbook workbook = xlApp.Workbooks.Open(Server.MapPath("~/Content/MTM_Library.xlsx"));
-                    var workbook = xlApp.Workbooks.Open(_pathDir + @"\Data\MTM_Library_modified.xlsx");
-                    var workbookAvgMonthOfCities = xlApp.Workbooks.Open(ExcelFile.FullName);
+                    
+                    //var workbook = xlApp.Workbooks.Open(Environment.CurrentDirectory + "\\Data\\MTM_Library_modified.xlsx");
+                    
 
-                    var sheetAvgMonthOfCities = (Worksheet)workbookAvgMonthOfCities.Sheets[1];
+                    
                     int CurrColumn = 0;
 
                     while (!string.IsNullOrEmpty(sheetAvgMonthOfCities.Cells[1, CurrColumn + 2].Text))
@@ -110,9 +127,8 @@ namespace QuangMay
                         CurrColumn++;
                     }
 
-                    var workbookViXich = xlApp.Workbooks.Open(Environment.CurrentDirectory + "\\dovixich.xlsx");
-                    var Sheet_ViXich_HCM = (Worksheet)workbookViXich.Sheets[1];
-                    var Sheet_viXich_DANANG = (Worksheet)workbookViXich.Sheets[2];
+                   
+                    
 
 
                     var phiHCM = Sheet_ViXich_HCM.Cells[1,2].Value2;
@@ -137,7 +153,7 @@ namespace QuangMay
 
                     #region parse MTM Lib to var
                     //function to create MTM_Lib.json
-                    var sheets = workbook.Sheets;
+                    
                     List<MTM> listMTM = new List<MTM>();
                     var SheetMinMax = new MTM();
                     //foreach (var sh in sheets)
@@ -404,16 +420,20 @@ namespace QuangMay
 
                     }
                     workbook.Close();
-
+                    workbookViXich.Close();
                     workbookAvgMonthOfCities.Close();
-                    xlApp.Quit();
+                    //xlApp.Quit();
 
+                    //Marshal.ReleaseComObject(sheetAvgMonthOfCities);
+                    //Marshal.ReleaseComObject(sheets);
+                    //Marshal.ReleaseComObject(workbook);
+                    //Marshal.ReleaseComObject(workbookAvgMonthOfCities);
 
-                    Marshal.ReleaseComObject(sheetAvgMonthOfCities);
-                    Marshal.ReleaseComObject(sheets);
-                    Marshal.ReleaseComObject(workbook);
-                    Marshal.ReleaseComObject(workbookAvgMonthOfCities);
-                    Marshal.ReleaseComObject(xlApp);
+                    //Marshal.ReleaseComObject(Sheet_ViXich_HCM);
+                    //Marshal.ReleaseComObject(Sheet_viXich_DANANG);
+                    //Marshal.ReleaseComObject(workbookViXich);
+                    
+                    //Marshal.ReleaseComObject(xlApp);
 
                     Console.WriteLine("Calculate finished, check output xlsx file");
 
@@ -424,6 +444,18 @@ namespace QuangMay
             {
                 Console.WriteLine("Error: " + e.Message);
             }
+            xlApp.Quit();
+
+            Marshal.ReleaseComObject(sheetAvgMonthOfCities);
+            Marshal.ReleaseComObject(sheets);
+            Marshal.ReleaseComObject(workbook);
+            Marshal.ReleaseComObject(workbookAvgMonthOfCities);
+
+            Marshal.ReleaseComObject(Sheet_ViXich_HCM);
+            Marshal.ReleaseComObject(Sheet_viXich_DANANG);
+            Marshal.ReleaseComObject(workbookViXich);
+
+            Marshal.ReleaseComObject(xlApp);
             Console.WriteLine("any key to exit!");
             Console.ReadLine();
         }
