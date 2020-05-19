@@ -33,13 +33,34 @@ namespace QuangMay
             return lambdaCalculus + pico * Math.Exp(-k * m);
         }
 
-        static double b8_Tinh_X(int gioTruoc)
+        static double b8_Tinh_X(int gioTruoc, Random rnd)
         {
-            Random rnd = new Random();
-            var et = rnd.Next(0, 1);
-            double x = 0.54 * gioTruoc + et;
+            //Random rnd = new Random();
+            var et = rnd.NextDouble();
+            et = Math.Round(et, 4);
+
+            double resX = 0;
+            for (int i=0; i<= gioTruoc; i++)
+            { 
+                //resX += 
+            }
+            
+            double x = gioTruoc;
+            x = 0.54 * x + et;
             return x;
         }
+
+        static double dequib8(int hour, double et)
+        {
+            if (hour == 0)
+            {
+                return et;
+            }
+            hour--;
+            return 0.54 * dequib8(hour, et) + et;
+            //return 0;
+        }
+
 
 
         static double b10_Tinh_Kt(double b6_Ktm, double b9_Fnormal, double b3_oKt)
@@ -392,7 +413,7 @@ namespace QuangMay
                                 {
                                     var kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiHCM, goctheogio[e], 0.0);
 
-                                    var x = b8_Tinh_X(e);
+                                    var x = b8_Tinh_X(e,rnd);
                                     //var b9_fnormal = b9_fnormal();
                                     var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(x, true);
                                     Fnomarl = Math.Round(Fnomarl, 5);
