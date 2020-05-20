@@ -26,28 +26,31 @@ namespace QuangMay
 
         static double b6_Tinh_Ktm(double Kt, double phiOfCity, double gocCuaGio, double xichDoVi)
         {
+            //var SoMotTruKt = 1 - Kt;
+            //var k3t = Math.Pow(Kt, 3);
+
+            //var v2 = 1.167 * k3t * SoMotTruKt;
+            //var test = Kt - v2;
             double lambdaCalculus = Kt - 1.167 * Math.Pow(Kt, 3) * (1 - Kt);
             double pico = 0.979 * (1 - Kt);
             double k = 1.141 * (1 - Kt) / Kt;
-            double m = 1 / (Math.Cos(phiOfCity) * Math.Cos(xichDoVi) * Math.Cos(gocCuaGio) + Math.Sin(phiOfCity) * Math.Sin(xichDoVi));
-            return lambdaCalculus + pico * Math.Exp(-k * m);
+            double m = 1 /
+                        ((Math.Cos(phiOfCity) * Math.Cos(xichDoVi) * Math.Cos(gocCuaGio)) + 
+                        (Math.Sin(phiOfCity) * Math.Sin(xichDoVi))
+                        
+                        );
+            var res = lambdaCalculus + pico * Math.Exp(-k * m);
+            return res;
         }
 
-        static double b8_Tinh_X(int gioTruoc, Random rnd)
+        static double b8_Tinh_X(int hour, Random rnd)
         {
             //Random rnd = new Random();
             var et = rnd.NextDouble();
-            et = Math.Round(et, 4);
+            //et = Math.Round(et, 4);
 
-            double resX = 0;
-            for (int i=0; i<= gioTruoc; i++)
-            { 
-                //resX += 
-            }
-            
-            double x = gioTruoc;
-            x = 0.54 * x + et;
-            return x;
+            double resX = dequib8(hour, et);
+            return resX;
         }
 
         static double dequib8(int hour, double et)
@@ -58,7 +61,6 @@ namespace QuangMay
             }
             hour--;
             return 0.54 * dequib8(hour, et) + et;
-            //return 0;
         }
 
 
@@ -411,12 +413,30 @@ namespace QuangMay
                                 //var tongSoNgay = CountDays(31, 12);
                                 for (int e = 0; e < goctheogio.Count; e++)
                                 {
-                                    var kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiHCM, goctheogio[e], 0.0);
+                                    //kOfMON index
+                                    var monIndex = ct.KMon.FindIndex(g => g.MonName == kOfMON.MonName);
+
+                                    //DaysInMon Index
+                                    var countDay = CountDays(i + 1, monIndex);
+
+                                    double phiOfCity = 0.0;
+                                    switch (ct.CityName.ToUpper())
+                                    {
+                                        case "TP. HCM":
+                                            phiOfCity = phiHCM;
+                                            break;
+                                        case "DANANG":
+                                            phiOfCity = phiDANANG;
+                                            break;
+                                    }
+
+                                    //==>dovixich from excel file
+                                    var kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiOfCity, goctheogio[e], countDay);
 
                                     var x = b8_Tinh_X(e,rnd);
                                     //var b9_fnormal = b9_fnormal();
                                     var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(x, true);
-                                    Fnomarl = Math.Round(Fnomarl, 5);
+                                    //Fnomarl = Math.Round(Fnomarl, 5);
 
                                     var b10 = b10_Tinh_Kt(kt, Fnomarl, b3_oKt);
                                     xlsSheet.Cells[count + e + 1, 2].Value = $"Hour {e+1}";
@@ -496,6 +516,7 @@ namespace QuangMay
                     return 31;
             }
         }
+
 
         static int CountDays(int day, int mon)
         {
