@@ -26,30 +26,27 @@ namespace QuangMay
 
         static double b6_Tinh_Ktm(double Kt, double phiOfCity, double gocCuaGio, double xichDoVi)
         {
-            //var SoMotTruKt = 1 - Kt;
-            //var k3t = Math.Pow(Kt, 3);
 
-            //var v2 = 1.167 * k3t * SoMotTruKt;
-            //var test = Kt - v2;
             double lambdaCalculus = Kt - 1.167 * Math.Pow(Kt, 3) * (1 - Kt);
             double pico = 0.979 * (1 - Kt);
             double k = 1.141 * (1 - Kt) / Kt;
+            
+            //todo sai sai chỗ này
             double m = 1 /
                         ((Math.Cos(phiOfCity) * Math.Cos(xichDoVi) * Math.Cos(gocCuaGio)) + 
-                        (Math.Sin(phiOfCity) * Math.Sin(xichDoVi))
-                        
-                        );
+                        (Math.Sin(phiOfCity) * Math.Sin(xichDoVi)));
             var res = lambdaCalculus + pico * Math.Exp(-k * m);
             return res;
         }
 
-        static double b8_Tinh_X(int hour, Random rnd)
+        static double b8_Tinh_X(int hour, double b7_et)
         {
             //Random rnd = new Random();
-            var et = rnd.NextDouble();
+            //double et = rnd.Next(0, 6782);
+            //et = et / 10000;
             //et = Math.Round(et, 4);
 
-            double resX = dequib8(hour, et);
+            double resX = dequib8(hour, b7_et);
             return resX;
         }
 
@@ -67,7 +64,7 @@ namespace QuangMay
 
         static double b10_Tinh_Kt(double b6_Ktm, double b9_Fnormal, double b3_oKt)
         {
-            double res_kt = b6_Ktm + (b9_Fnormal / b3_oKt);
+            double res_kt = b6_Ktm + (b9_Fnormal * b3_oKt);
             return res_kt;
         }
 
@@ -158,14 +155,14 @@ namespace QuangMay
                     var arrViXichHCM = new List<double>();
                     for (int i=2;i<367;i++)
                     {
-                        arrViXichHCM.Add(Sheet_ViXich_HCM.Cells[i, 5].Value2);
+                        arrViXichHCM.Add(Sheet_ViXich_HCM.Cells[i, 4].Value2);
                     }
                     
                     var phiDANANG = Sheet_viXich_DANANG.Cells[1,2].Value2;
                     var arrViXichDANANG = new List<double>();
                     for (int i = 2; i < 367; i++)
                     {
-                        arrViXichDANANG.Add(Sheet_viXich_DANANG.Cells[i, 5].Value2);
+                        arrViXichDANANG.Add(Sheet_viXich_DANANG.Cells[i, 4].Value2);
                     }
 
 
@@ -420,25 +417,38 @@ namespace QuangMay
                                     var countDay = CountDays(i + 1, monIndex);
 
                                     double phiOfCity = 0.0;
+                                    double degree = 0.0;
                                     switch (ct.CityName.ToUpper())
                                     {
                                         case "TP. HCM":
                                             phiOfCity = phiHCM;
+                                            degree = arrViXichHCM[countDay-1];
                                             break;
                                         case "DANANG":
                                             phiOfCity = phiDANANG;
+                                            degree = arrViXichDANANG[countDay-1];
                                             break;
                                     }
 
                                     //==>dovixich from excel file
-                                    var kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiOfCity, goctheogio[e], countDay);
+                                    var kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiOfCity, goctheogio[e], degree);
 
-                                    var x = b8_Tinh_X(e,rnd);
+                                    var b7_et = xlApp.WorksheetFunction.Gauss(1);
+
+                                    var x = b8_Tinh_X(e, b7_et);
                                     //var b9_fnormal = b9_fnormal();
                                     var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(x, true);
                                     //Fnomarl = Math.Round(Fnomarl, 5);
 
                                     var b10 = b10_Tinh_Kt(kt, Fnomarl, b3_oKt);
+                                    if (e+1 <= 6 || e+1 >= 18)
+                                    {
+                                        b10 = b10 > 1 ? 1 : b10;
+                                    }
+                                    if (b10 > 1)
+                                    {
+                                        b10 = b10 - Math.Truncate(b10);
+                                    }
                                     xlsSheet.Cells[count + e + 1, 2].Value = $"Hour {e+1}";
                                     xlsSheet.Cells[count + e + 1, 3].Value2 = b10;
                                 }
