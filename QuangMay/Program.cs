@@ -79,7 +79,9 @@ namespace QuangMay
             }
 
             var ExcelFile = new FileInfo(args[0]);
-            string _pathDir = Directory.GetCurrentDirectory();
+            //string _pathDir = Directory.GetCurrentDirectory();
+            string _pathDir = AppDomain.CurrentDomain.BaseDirectory;
+            //Console.WriteLine("dir:" + _pathDir);
             var xlApp = new Application();
             var workbook = xlApp.Workbooks.Open(_pathDir + @"\Data\MTM_Library_modified.xlsx");
             var sheets = workbook.Sheets;
@@ -93,46 +95,35 @@ namespace QuangMay
             var Sheet_ViXich_HCM = (Worksheet)workbookViXich.Sheets[1];
             var Sheet_viXich_DANANG = (Worksheet)workbookViXich.Sheets[2];
 
-
+            var errCode = "0";
             try
             {
-                
-                //string _path = "";
-
                 if (args.Count() != 1)
                 {
-                    Console.WriteLine("Need Excel file to calculate");
+                    errCode = "1";
+                    Console.WriteLine($"Need Excel file to calculate - errCode:{errCode}");
                     return;
 
                 }
                 else
                 {
-                    
-
-                    var di = new DirectoryInfo(_pathDir + @"\Result");
+                    errCode = "2";
+                    var di = new DirectoryInfo(_pathDir + @"Result");
                     Directory.CreateDirectory(di.FullName);
-
+                    errCode = "2.1";
                     foreach (FileInfo fi in di.GetFiles())
                     {
                         fi.Delete();
                     }
 
-
-
                     //#region init data
-                    
-                    ;
+                    errCode = "2.2";
                     object misValue = System.Reflection.Missing.Value;
                     var KOfYear = new List<K_Year>();
 
-
-                    string path = Directory.GetCurrentDirectory();
-
+                    //string path = Directory.GetCurrentDirectory();
                     //Workbook workbook = xlApp.Workbooks.Open(Server.MapPath("~/Content/MTM_Library.xlsx"));
-                    
                     //var workbook = xlApp.Workbooks.Open(Environment.CurrentDirectory + "\\Data\\MTM_Library_modified.xlsx");
-                    
-
                     
                     int CurrColumn = 0;
 
@@ -146,9 +137,9 @@ namespace QuangMay
                         }
                         CurrColumn++;
                     }
+                    errCode = "2.3";
 
-                   
-                    
+
 
 
                     var phiHCM = Sheet_ViXich_HCM.Cells[1,2].Value2;
@@ -164,7 +155,7 @@ namespace QuangMay
                     {
                         arrViXichDANANG.Add(Sheet_viXich_DANANG.Cells[i, 4].Value2);
                     }
-
+                    errCode = "3";
 
 
 
@@ -177,6 +168,7 @@ namespace QuangMay
                     List<MTM> listMTM = new List<MTM>();
                     var SheetMinMax = new MTM();
                     //foreach (var sh in sheets)
+                    errCode = "4";
                     for (int p = 1; p <= sheets.Count; p++)
                     {
 
@@ -231,16 +223,18 @@ namespace QuangMay
                             }
                             listMTM.Add(thisMTM);
                         }
-
+                        errCode = "4.1";
                         Marshal.ReleaseComObject(ActiveSheet);
 
                     }
-
+                    errCode = "4.2";
                     #endregion
 
 
+                    Console.WriteLine("Begin calculate...");
                     foreach (var ct in KOfYear)
                     {
+                        errCode = "5";
                         List<double> TrungBinhThang = new List<double>();
                         ct.KMon.ForEach(x => TrungBinhThang.Add(x.K_AvgMon));
 
@@ -252,7 +246,7 @@ namespace QuangMay
                             //vidu Jan 0.435
                             int indexOfMonth = j;
                             var Kthang = ct.KMon[indexOfMonth];
-
+                            errCode = "5 b7";
                             //lấy range tat ca cac sheet để so sánh
                             //vidu vậy chọn Sheet “MTM 4” trong file Excel(0.40 < Kt ≤ 0.45)
                             var currentMTM = new MTM();
@@ -265,6 +259,7 @@ namespace QuangMay
                                 }
                             }
 
+                            errCode = "5 b7 1";
                             var temp = currentMTM.sName.Substring(3);
                             var currentMinMaxColumn = Convert.ToInt16(temp);
                             var currentMinMaxColumnList = new List<double>();
@@ -280,6 +275,7 @@ namespace QuangMay
                             #endregion
 
                             #region bước 2
+                            errCode = "5 b2";
                             double LastMonthAvg;
                             if (indexOfMonth == 0)
                                 LastMonthAvg = ct.KMon.SingleOrDefault(x => x.MonName == "Dec").K_AvgMon;
@@ -301,6 +297,7 @@ namespace QuangMay
                                     LastDayKAvg = ct.KMon[j].K_DaysInMon[k - 1];
                                 }
                                 #region bước 3
+                                errCode = "5 b3";
                                 var b3RowOnMinMax = 0;
                                 for (int i = 0; i <= currentMinMaxColumnList.Count; i++)
                                 {
@@ -318,7 +315,7 @@ namespace QuangMay
 
 
                                 #region bước 4
-
+                                errCode = "5 b4";
                                 var R = rnd.NextDouble();
                                 R = Math.Round(R, 4);
 
@@ -326,6 +323,7 @@ namespace QuangMay
                                 #endregion
 
                                 #region bước 5
+                                errCode = "5 b5";
                                 double sumOfB4 = 0;
                                 int indexRowOfB4 = 0;
                                 for (int i = 0; i < rowOfSelectedMTM.Count; i++)
@@ -352,6 +350,7 @@ namespace QuangMay
                                 #endregion
 
                                 #region bước 6
+                                errCode = "5 b6";
                                 double KtOfCurrentDay = (currentMinMaxColumnList[indexRowOfB4] + currentMinMaxColumnList[indexRowOfB4 + 1]) / 2;
                                 KtOfCurrentDay = Math.Round(KtOfCurrentDay, 4);
                                 ct.KMon[j].K_DaysInMon[k] = KtOfCurrentDay;
@@ -372,11 +371,13 @@ namespace QuangMay
                         //InputPath = _path.Substring(0, idx);
                         //InputPath = InputPath.Replace("UploadData", "Result");
 
+                        errCode = "6";
                         var xlsWorkbook = xlApp.Workbooks.Add();
                         xlsWorkbook.Author = "Tôn Trương";
 
                         foreach (var kOfMON in ct.KMon)
                         {
+                            errCode = "6 ForMon";
                             //Add a blank WorkSheet
                             //WorkSheet xlsSheet = xlsWorkbook.CreateWorkSheet(kOfMON.Key);
                             var xlsSheet = (Worksheet)xlsWorkbook.Worksheets.Add();
@@ -389,6 +390,7 @@ namespace QuangMay
                             int count = 2;
                             for (int i = 1; i <= 31; i++)
                             {
+                                errCode = "6 ForDay";
                                 xlsSheet.Cells[count, 1].Value2 = "ngày " + i;
                                 //xlsSheet.Cells[xlsSheet.Cells[count+1, 1], xlsSheet.Cells[count+24, 1]].Merge();
                                 count += 25;
@@ -399,6 +401,7 @@ namespace QuangMay
                             count = 2;
                             for (int i = 0; i < kOfMON.K_DaysInMon.Count; i++)
                             {
+                                errCode = "6 ExcelCells";
                                 //xlsSheet.Cells[count, 3].Value2 = kOfMON.RndNo_DaysInMon[count];
                                 //xlsSheet.Cells[count, 4].Value2 = kOfMON.K_DaysInMon[count];
                                 xlsSheet.Cells[count, 2].Value2 = kOfMON.RndNo_DaysInMon[i];
@@ -410,6 +413,7 @@ namespace QuangMay
                                 //var tongSoNgay = CountDays(31, 12);
                                 for (int e = 0; e < goctheogio.Count; e++)
                                 {
+                                    errCode = "6 ForHour";
                                     //kOfMON index
                                     var monIndex = ct.KMon.FindIndex(g => g.MonName == kOfMON.MonName);
 
@@ -433,14 +437,19 @@ namespace QuangMay
                                     //==>dovixich from excel file
                                     var kt = b6_Tinh_Ktm(kOfMON.K_DaysInMon[i], phiOfCity, goctheogio[e], degree);
 
-                                    var b7_et = xlApp.WorksheetFunction.Gauss(1);
+                                    errCode = "6 GaussFunc";
+                                    //var b7_et = xlApp.WorksheetFunction.Gauss(1);
+                                    var b7_et = rnd.NextDouble();
+                                    //Console.WriteLine($"b7_et:{b7_et}");
 
                                     var x = b8_Tinh_X(e, b7_et);
                                     //var b9_fnormal = b9_fnormal();
+                                    errCode = "6 NormFunc";
                                     var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(x, true);
                                     //Fnomarl = Math.Round(Fnomarl, 5);
 
                                     var b10 = b10_Tinh_Kt(kt, Fnomarl, b3_oKt);
+                                    errCode = "6 IfHours";
                                     if (e+1 <= 6 || e+1 >= 18)
                                     {
                                         b10 = b10 > 1 ? 1 : b10;
@@ -460,9 +469,8 @@ namespace QuangMay
                             Marshal.ReleaseComObject(xlsSheet);
                         }
                         //Save the excel file
-
-
-
+                        errCode = "7 SaveResultFile";
+                        //Console.WriteLine($"{di}\\Result_{ct.CityName}.xlsx");
                         xlsWorkbook.SaveAs($"{di}\\Result_{ct.CityName}.xlsx");
                         Console.WriteLine($"saved file to {di}\\Result_{ct.CityName}.xlsx");
                         xlsWorkbook.Close(true, misValue, misValue);
@@ -494,6 +502,7 @@ namespace QuangMay
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.Message);
+                Console.WriteLine("ErrorCode: " + errCode);
             }
             xlApp.Quit();
 
@@ -507,8 +516,8 @@ namespace QuangMay
             Marshal.ReleaseComObject(workbookViXich);
 
             Marshal.ReleaseComObject(xlApp);
-            Console.WriteLine("any key to exit!");
-            Console.ReadLine();
+            //Console.WriteLine("any key to exit!");
+            //Console.ReadLine();
         }
 
         static int soNgayCuaThang(int mon)

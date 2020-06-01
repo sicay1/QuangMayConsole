@@ -36,3 +36,4 @@ D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\Data\MTM_Library_modified.xlsx
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\MathNet.Numerics.dll
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Release\MathNet.Numerics.xml
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.csproj.CoreCompileInputs.cache
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Release\QuangMay.csprojAssemblyReference.cache

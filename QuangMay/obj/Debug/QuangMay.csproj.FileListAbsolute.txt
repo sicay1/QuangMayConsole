@@ -6,7 +6,6 @@ C:\Users\sicay\source\repos\QuangMay\QuangMay\obj\Debug\QuangMay.pdb
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\QuangMay.exe.config
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\QuangMay.exe
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\QuangMay.pdb
-D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.csprojAssemblyReference.cache
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.exe
 D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.pdb
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\Data\MTM_Library.xlsx
@@ -42,3 +41,4 @@ D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.csproj.CoreCompileInputs.
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\Data\MTM_Library_modified.xlsx
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\MathNet.Numerics.dll
 D:\Code\OUTSOURCE\QuangMay\QuangMay\bin\Debug\MathNet.Numerics.xml
+D:\Code\OUTSOURCE\QuangMay\QuangMay\obj\Debug\QuangMay.csprojAssemblyReference.cache
