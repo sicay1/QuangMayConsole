@@ -301,13 +301,14 @@ namespace QuangMay
                                 var b3RowOnMinMax = 0;
                                 for (int i = 0; i <= currentMinMaxColumnList.Count; i++)
                                 {
+                                    errCode = $"5 b3 for[i]:{i} count:{currentMinMaxColumnList.Count}";
                                     if (currentMinMaxColumnList[i] < LastDayKAvg && LastDayKAvg < currentMinMaxColumnList[i + 1])
                                     {
                                         b3RowOnMinMax = i;
                                         break;
                                     }
                                 }
-
+                                errCode = "5 b3.1";
                                 double tempNo = (double)b3RowOnMinMax * 10 / 20;
                                 var rowNo = Convert.ToInt16(Math.Floor(tempNo));
                                 var rowOfSelectedMTM = currentMTM.sValues.GetRange(rowNo * 20, 20);
@@ -444,10 +445,11 @@ namespace QuangMay
 
                                     var x = b8_Tinh_X(e, b7_et);
                                     //var b9_fnormal = b9_fnormal();
-                                    errCode = "6 NormFunc";
+                                    errCode = $"6 NormFunc x:{x}"; 
                                     var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(x, true);
                                     //Fnomarl = Math.Round(Fnomarl, 5);
 
+                                    errCode = $"6 NormFunc beforeB10";
                                     var b10 = b10_Tinh_Kt(kt, Fnomarl, b3_oKt);
                                     errCode = "6 IfHours";
                                     if (e+1 <= 6 || e+1 >= 18)
@@ -472,7 +474,9 @@ namespace QuangMay
                         errCode = "7 SaveResultFile";
                         //Console.WriteLine($"{di}\\Result_{ct.CityName}.xlsx");
                         xlsWorkbook.SaveAs($"{di}\\Result_{ct.CityName}.xlsx");
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"saved file to {di}\\Result_{ct.CityName}.xlsx");
+                        Console.ResetColor();
                         xlsWorkbook.Close(true, misValue, misValue);
 
                         Marshal.ReleaseComObject(xlsWorkbook);
@@ -495,14 +499,15 @@ namespace QuangMay
                     //Marshal.ReleaseComObject(xlApp);
 
                     Console.WriteLine("Calculate finished, check output xlsx file");
-
                 }
 
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Error: " + e.Message);
                 Console.WriteLine("ErrorCode: " + errCode);
+                Console.ResetColor();
             }
             xlApp.Quit();
 

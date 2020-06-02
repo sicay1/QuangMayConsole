@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="QuangMay.exe" size="40928">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="QuangMay.exe" size="41440">
       <assemblyIdentity name="QuangMay" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+zuOxlz+aYulnVG8YIcFyxXde2JXLw0xlCYCUY282IY=</dsig:DigestValue>
+        <dsig:DigestValue>fJSoFvUz73CpuvnZfCBZlCd8uSdZ3Nc1NC8tq+PgB3A=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
