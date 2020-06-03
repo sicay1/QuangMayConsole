@@ -504,7 +504,7 @@ namespace QuangMay
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("Error: " + e.Message);
                 Console.WriteLine("ErrorCode: " + errCode);
                 Console.ResetColor();
