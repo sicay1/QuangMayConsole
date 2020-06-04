@@ -30,10 +30,10 @@ namespace QuangMay
             double lambdaCalculus = Kt - 1.167 * Math.Pow(Kt, 3) * (1 - Kt);
             double pico = 0.979 * (1 - Kt);
             double k = 1.141 * (1 - Kt) / Kt;
-            
+
             //todo sai sai chỗ này
             double m = 1 /
-                        ((Math.Cos(phiOfCity) * Math.Cos(xichDoVi) * Math.Cos(gocCuaGio)) + 
+                        ((Math.Cos(phiOfCity) * Math.Cos(xichDoVi) * Math.Cos(gocCuaGio)) +
                         (Math.Sin(phiOfCity) * Math.Sin(xichDoVi)));
             var res = lambdaCalculus + pico * Math.Exp(-k * m);
             return res;
@@ -72,7 +72,7 @@ namespace QuangMay
         {
             Console.WriteLine("init data, please wait...");
             var goctheogio = new List<int> { -165, -150, -135, -120, -105, -90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180 };
-            
+
             foreach (var process in Process.GetProcessesByName("EXCEL"))
             {
                 process.Kill();
@@ -88,7 +88,7 @@ namespace QuangMay
 
             var workbookAvgMonthOfCities = xlApp.Workbooks.Open(ExcelFile.FullName);
             var sheetAvgMonthOfCities = (Worksheet)workbookAvgMonthOfCities.Sheets[1];
-            
+
 
 
             var workbookViXich = xlApp.Workbooks.Open(_pathDir + @"\Data\dovixich.xlsx");
@@ -124,7 +124,7 @@ namespace QuangMay
                     //string path = Directory.GetCurrentDirectory();
                     //Workbook workbook = xlApp.Workbooks.Open(Server.MapPath("~/Content/MTM_Library.xlsx"));
                     //var workbook = xlApp.Workbooks.Open(Environment.CurrentDirectory + "\\Data\\MTM_Library_modified.xlsx");
-                    
+
                     int CurrColumn = 0;
 
                     while (!string.IsNullOrEmpty(sheetAvgMonthOfCities.Cells[1, CurrColumn + 2].Text))
@@ -142,14 +142,14 @@ namespace QuangMay
 
 
 
-                    var phiHCM = Sheet_ViXich_HCM.Cells[1,2].Value2;
+                    var phiHCM = Sheet_ViXich_HCM.Cells[1, 2].Value2;
                     var arrViXichHCM = new List<double>();
-                    for (int i=2;i<367;i++)
+                    for (int i = 2; i < 367; i++)
                     {
                         arrViXichHCM.Add(Sheet_ViXich_HCM.Cells[i, 4].Value2);
                     }
-                    
-                    var phiDANANG = Sheet_viXich_DANANG.Cells[1,2].Value2;
+
+                    var phiDANANG = Sheet_viXich_DANANG.Cells[1, 2].Value2;
                     var arrViXichDANANG = new List<double>();
                     for (int i = 2; i < 367; i++)
                     {
@@ -164,7 +164,7 @@ namespace QuangMay
 
                     #region parse MTM Lib to var
                     //function to create MTM_Lib.json
-                    
+
                     List<MTM> listMTM = new List<MTM>();
                     var SheetMinMax = new MTM();
                     //foreach (var sh in sheets)
@@ -302,6 +302,14 @@ namespace QuangMay
                                 for (int i = 0; i <= currentMinMaxColumnList.Count; i++)
                                 {
                                     errCode = $"5 b3 for[i]:{i} count:{currentMinMaxColumnList.Count}";
+
+                                    //fix case ErrorCode: 5 b3 for[i]:20 count:21
+                                    if (i == currentMinMaxColumnList.Count)
+                                    {
+                                        //Console.WriteLine($"5 b3 for[i]:{i} count:{currentMinMaxColumnList.Count}");
+                                        b3RowOnMinMax = i;
+                                        break;
+                                    }
                                     if (currentMinMaxColumnList[i] < LastDayKAvg && LastDayKAvg < currentMinMaxColumnList[i + 1])
                                     {
                                         b3RowOnMinMax = i;
@@ -395,7 +403,7 @@ namespace QuangMay
                                 xlsSheet.Cells[count, 1].Value2 = "ngày " + i;
                                 //xlsSheet.Cells[xlsSheet.Cells[count+1, 1], xlsSheet.Cells[count+24, 1]].Merge();
                                 count += 25;
-                                
+
                             }
 
 
@@ -427,11 +435,11 @@ namespace QuangMay
                                     {
                                         case "TP. HCM":
                                             phiOfCity = phiHCM;
-                                            degree = arrViXichHCM[countDay-1];
+                                            degree = arrViXichHCM[countDay - 1];
                                             break;
                                         case "DANANG":
                                             phiOfCity = phiDANANG;
-                                            degree = arrViXichDANANG[countDay-1];
+                                            degree = arrViXichDANANG[countDay - 1];
                                             break;
                                     }
 
@@ -445,14 +453,14 @@ namespace QuangMay
 
                                     var x = b8_Tinh_X(e, b7_et);
                                     //var b9_fnormal = b9_fnormal();
-                                    errCode = $"6 NormFunc x:{x}"; 
+                                    errCode = $"6 NormFunc x:{x}";
                                     var Fnomarl = xlApp.WorksheetFunction.Norm_S_Dist(x, true);
                                     //Fnomarl = Math.Round(Fnomarl, 5);
 
                                     errCode = $"6 NormFunc beforeB10";
                                     var b10 = b10_Tinh_Kt(kt, Fnomarl, b3_oKt);
                                     errCode = "6 IfHours";
-                                    if (e+1 <= 6 || e+1 >= 18)
+                                    if (e + 1 <= 6 || e + 1 >= 18)
                                     {
                                         b10 = b10 > 1 ? 1 : b10;
                                     }
@@ -460,12 +468,12 @@ namespace QuangMay
                                     {
                                         b10 = b10 - Math.Truncate(b10);
                                     }
-                                    xlsSheet.Cells[count + e + 1, 2].Value = $"Hour {e+1}";
+                                    xlsSheet.Cells[count + e + 1, 2].Value = $"Hour {e + 1}";
                                     xlsSheet.Cells[count + e + 1, 3].Value2 = b10;
                                 }
 
 
-                                count+=25;
+                                count += 25;
                             }
 
                             Marshal.ReleaseComObject(xlsSheet);
@@ -495,7 +503,7 @@ namespace QuangMay
                     //Marshal.ReleaseComObject(Sheet_ViXich_HCM);
                     //Marshal.ReleaseComObject(Sheet_viXich_DANANG);
                     //Marshal.ReleaseComObject(workbookViXich);
-                    
+
                     //Marshal.ReleaseComObject(xlApp);
 
                     Console.WriteLine("Calculate finished, check output xlsx file");
@@ -545,7 +553,7 @@ namespace QuangMay
         static int CountDays(int day, int mon)
         {
             var count = 0;
-            for (int i= mon; i>1; i--)
+            for (int i = mon; i > 1; i--)
             {
                 count += soNgayCuaThang(i);
             }
